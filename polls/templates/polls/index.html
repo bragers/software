@@ -84,8 +84,11 @@ footer {
 <section>
   <aside>
   <nav>
-      <button onclick="setGetKids()" id="kids" name="kids" type="button">KIDS</button>
-
+      <form action="{% url 'polls:test' %}" method="post">
+        <label for="your_name">Your name: </label>
+        <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
+        <input type="submit" value="OK">
+      </form>
     <ul>
 
       <li><a href="#">Filter Options Here</a></li>
