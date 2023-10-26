@@ -84,37 +84,33 @@ footer {
 <section>
   <aside>
   <nav>
+      <button onclick="setGetKids()" id="kids" name="kids" type="button">KIDS</button>
+
     <ul>
-      <li><a href="#">Filter Options Here</a></li>
+
       <li><a href="#">Filter Options Here</a></li>
       <li><a href="#">Filter Options Here</a></li>
     </ul>
   </nav>
 </aside>
+
+    {% if latest_question_list %}
+    {% for question in latest_question_list %}
   <article>
-    <h1>Articles</h1>
-      {% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>{% endfor %}
-    </ul>
-    {% else %}
-        <p>No polls are available.</p>
-    {% endif %}
+      <header><h1>{{ question.question_text }}</h1></header>
+
+        <ul>
+            <li>Published: {{ question.pub_date }}</li>
+            <li>For kids: {{ question.for_kids }}</li>
+            <li>High activity: {{ question.high_activity }}</li>
+        </ul>
+
       <details>More information</details>
-  </article>
-    <article>
-    <h1>Articles</h1>
-      {% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>{% endfor %}
-    </ul>
+  </article>{% endfor %}
     {% else %}
-        <p>No polls are available.</p>
+        <p>Nada niks nope</p>
     {% endif %}
-      <details>More information</details>
-  </article>
+
 
 </section>
 
@@ -123,4 +119,9 @@ footer {
 </footer>
 
 </body>
+
+
+
+
+
 </html>
