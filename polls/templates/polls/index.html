@@ -82,36 +82,44 @@ footer {
 </header>
 
 <section>
-  <aside>
-  <nav>
-      <button onclick="setGetKids()" id="kids" name="kids" type="button">KIDS</button>
-
-    <ul>
-
-      <li><a href="#">Filter Options Here</a></li>
-      <li><a href="#">Filter Options Here</a></li>
-    </ul>
-  </nav>
-</aside>
-
-    {% if latest_question_list %}
-    {% for question in latest_question_list %}
-  <article>
-      <header><h1>{{ question.question_text }}</h1></header>
-
+  <form method="get">
+    <aside>
+      <nav>
         <ul>
-            <li>Published: {{ question.pub_date }}</li>
-            <li>For kids: {{ question.for_kids }}</li>
-            <li>High activity: {{ question.high_activity }}</li>
+          <li>
+            <label>
+              <input type="checkbox" name="for_kids" value="1" {% if request.GET.for_kids %}checked{% endif %}>
+              For Kids
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" name="high_activity" value="1" {% if request.GET.high_activity %}checked{% endif %}>
+              High Activity
+            </label>
+          </li>
         </ul>
+      </nav>
+    </aside>
 
-      <details>More information</details>
-  </article>{% endfor %}
-    {% else %}
-        <p>Nada niks nope</p>
-    {% endif %}
+    <button type="submit">Apply Filters</button>
+  </form>
 
-
+  {% if latest_question_list %}
+    {% for question in latest_question_list %}
+      <article>
+          <header><h1>{{ question.question_text }}</h1></header>
+          <ul>
+              <li>Published: {{ question.pub_date }}</li>
+              <li>For kids: {{ question.for_kids }}</li>
+              <li>High activity: {{ question.high_activity }}</li>
+          </ul>
+          <details>More information</details>
+      </article>
+    {% endfor %}
+  {% else %}
+    <p>No matching articles found.</p>
+  {% endif %}
 </section>
 
 <footer>
@@ -119,9 +127,4 @@ footer {
 </footer>
 
 </body>
-
-
-
-
-
 </html>

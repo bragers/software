@@ -1,9 +1,5 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
 from django.views import generic
-
-from .models import Question, Choice
+from .models import Question
 
 
 class IndexView(generic.ListView):
@@ -11,42 +7,15 @@ class IndexView(generic.ListView):
     context_object_name = "latest_question_list"
 
     def get_queryset(self):
-        kids = True
-        activity = True
+        queryset = Question.objects.all()
 
+        for_kids = self.request.GET.get('for_kids')
+        high_activity = self.request.GET.get('high_activity')
 
-        """Return the last five published questions."""
-        return Question.objects.filter(for_kids=kids, high_activity=activity).order_by("pub_date")[:]
+        if for_kids:
+            queryset = queryset.filter(for_kids=True)
 
+        if high_activity:
+            queryset = queryset.filter(high_activity=True)
 
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = "polls/detail.html"
-
-
-class ResultsView(generic.DetailView):
-    model = Question
-    template_name = "polls/results.html"
-
-
-def vote(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST["choice"])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(
-            request,
-            "polls/detail.html",
-            {
-                "question": question,
-                "error_message": "You didn't select a choice.",
-            },
-        )
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+        return queryset.order_by("-pub_date")
