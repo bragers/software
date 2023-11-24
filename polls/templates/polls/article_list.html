@@ -82,55 +82,64 @@ footer {
 </header>
 
 <section>
-  <form method="get" action="{% url 'article_list' %}">
+  <form method="get" action="{% url 'polls:article_list' %}">
     {% csrf_token %}
-    <aside>
-      <nav>
-        <ul>
-          <li>
-            {{ form.for_kids }}
-            <label>{{ form.for_kids.label_tag }}</label>
-          </li>
-          <li>
-            {{ form.high_activity }}
-            <label>{{ form.high_activity.label_tag }}</label>
-          </li>
-          <li>
-            {{ form.location }}
-            <label>{{ form.location.label_tag }}</label>
-          </li>
-          <li>
-            {{ form.language }}
-            <label>{{ form.language.label_tag }}</label>
-          </li>
-        </ul>
-      </nav>
-    </aside>
+    <nav>
+      <ul>
+        <li>
+          {{ form.for_kids }}
+          <label>{{ form.for_kids.label_tag }}</label>
+        </li>
+        <li>
+          {{ form.high_activity }}
+          <label>{{ form.high_activity.label_tag }}</label>
+        </li>
+        <li>
+          {{ form.location }}
+          <label>{{ form.location.label_tag }}</label>
+        </li>
+        <li>
+          {{ form.language }}
+          <label>{{ form.language.label_tag }}</label>
+        </li>
+        <li>
+          {{ form.free }}
+          <label>{{ form.free.label_tag }}</label>
+        </li>
+      </ul>
+    </nav>
 
     <button type="submit">Apply Filters</button>
   </form>
 
-  {% if articles %}
-    <ul>
-      {% for article in articles %}
-        <li>
-          <article>
-            <header><h1>{{ article.title }}</h1></header>
-            <ul>
-              <li>Published: {{ article.pub_date }}</li>
-              <li>For kids: {{ article.for_kids }}</li>
-              <li>High activity: {{ article.high_activity }}</li>
-              <!-- Add additional fields based on your model -->
-            </ul>
-            <details>More information</details>
-          </article>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No matching articles found.</p>
+  {% if articles.has_other_pages %}
+    <div class="pagination">
+      <!-- Pagination controls here -->
+    </div>
   {% endif %}
+
+  <ul>
+    {% for article in articles %}
+      <li>
+        <article>
+          <header><h1>{{ article.title }}</h1></header>
+          <ul>
+            <li>Published: {{ article.pub_date }}</li>
+            <li>For kids: {{ article.for_kids }}</li>
+            <li>High activity: {{ article.high_activity }}</li>
+            <li>Location: {{ article.location.name }}</li>
+            <li>Language: {{ article.language.name }}</li>
+            <li>Free: {{ article.free }}</li>
+            <!-- Add additional fields based on your model -->
+          </ul>
+          <details>More information</details>
+        </article>
+      </li>
+    {% endfor %}
+  </ul>
 </section>
+
+
 
 
 <footer>
