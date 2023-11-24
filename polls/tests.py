@@ -124,29 +124,29 @@ class ProcessPaymentViewTest(TestCase):
 class TestUrls(SimpleTestCase):
     def test_article_list_url_resolves(self):
         url = reverse('polls:article_list')
-        self.assertEquals(resolve(url).func.view_class, ArticleListView)
+        self.assertEqual(resolve(url).func.view_class, ArticleListView)
 
     def test_article_list_for_kids_url_resolves(self):
         url = reverse('polls:article_list_for_kids')
-        self.assertEquals(resolve(url).func.view_class, ArticleListView)
+        self.assertEqual(resolve(url).func.view_class, ArticleListView)
         self.assertTrue('for_kids' in resolve(url).kwargs)
 
     def test_article_list_high_activity_url_resolves(self):
         url = reverse('polls:article_list_high_activity')
-        self.assertEquals(resolve(url).func.view_class, ArticleListView)
+        self.assertEqual(resolve(url).func.view_class, ArticleListView)
         self.assertTrue('high_activity' in resolve(url).kwargs)
 
     def test_root_url_resolves(self):
         url = reverse('polls:article_list')
-        self.assertEquals(resolve(url).func.view_class, ArticleListView)
+        self.assertEqual(resolve(url).func.view_class, ArticleListView)
 
     def test_process_payment_url_resolves(self):
         url = reverse('polls:process_payment')
-        self.assertEquals(resolve(url).func, process_payment)
+        self.assertEqual(resolve(url).func, process_payment)
 
     def test_login_user_url_resolves(self):
         url = reverse('polls:login_user')
-        self.assertEquals(resolve(url).func, login_user)
+        self.assertEqual(resolve(url).func, login_user)
 
 
 class ArticleFilterFormTest(TestCase):
