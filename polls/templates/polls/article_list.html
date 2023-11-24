@@ -82,21 +82,26 @@ footer {
 </header>
 
 <section>
-  <form method="get">
+  <form method="get" action="{% url 'article_list' %}">
+    {% csrf_token %}
     <aside>
       <nav>
         <ul>
           <li>
-            <label>
-              <input type="checkbox" name="for_kids" value="1" {% if request.GET.for_kids %}checked{% endif %}>
-              For Kids
-            </label>
+            {{ form.for_kids }}
+            <label>{{ form.for_kids.label_tag }}</label>
           </li>
           <li>
-            <label>
-              <input type="checkbox" name="high_activity" value="1" {% if request.GET.high_activity %}checked{% endif %}>
-              High Activity
-            </label>
+            {{ form.high_activity }}
+            <label>{{ form.high_activity.label_tag }}</label>
+          </li>
+          <li>
+            {{ form.location }}
+            <label>{{ form.location.label_tag }}</label>
+          </li>
+          <li>
+            {{ form.language }}
+            <label>{{ form.language.label_tag }}</label>
           </li>
         </ul>
       </nav>
@@ -105,22 +110,28 @@ footer {
     <button type="submit">Apply Filters</button>
   </form>
 
-  {% if latest_question_list %}
-    {% for question in latest_question_list %}
-      <article>
-          <header><h1>{{ question.question_text }}</h1></header>
-          <ul>
-              <li>Published: {{ question.pub_date }}</li>
-              <li>For kids: {{ question.for_kids }}</li>
-              <li>High activity: {{ question.high_activity }}</li>
-          </ul>
-          <details>More information</details>
-      </article>
-    {% endfor %}
+  {% if articles %}
+    <ul>
+      {% for article in articles %}
+        <li>
+          <article>
+            <header><h1>{{ article.title }}</h1></header>
+            <ul>
+              <li>Published: {{ article.pub_date }}</li>
+              <li>For kids: {{ article.for_kids }}</li>
+              <li>High activity: {{ article.high_activity }}</li>
+              <!-- Add additional fields based on your model -->
+            </ul>
+            <details>More information</details>
+          </article>
+        </li>
+      {% endfor %}
+    </ul>
   {% else %}
     <p>No matching articles found.</p>
   {% endif %}
 </section>
+
 
 <footer>
   <p>Footer</p>
