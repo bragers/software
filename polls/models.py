@@ -17,3 +17,6 @@ class Article(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     language = models.ForeignKey(Language, on_delete=models.CASCADE)
     free = models.BooleanField(default=False)
+    slot1_remaining_count = models.IntegerField(default=20)
+    slot2_remaining_count = models.IntegerField(default=20)
+    slot3_remaining_count = models.IntegerField(default=20)

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Sightseeing Agency</title>
+<title>Aktivitet Agency</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -15,31 +15,41 @@ body {
 
 /* Style the header */
 header {
+
   background-color: #666;
   padding: 5px;
   text-align: center;
   font-size: 30px;
   color: white;
 }
-
+.header2{
+display: flex;
+flex-direction: row;
+flex-flow: row wrap;
+padding-left: 10px;
+}
+.toptext{
+padding-left: 5%;
+}
 /* Container for flexboxes */
 section {
-  display: -webkit-flex;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
-  flex-flow: row-reverse wrap;
+  flex-flow: row wrap;
   flex: 0 100%;
 }
 aside {
   display: flex;
   flex: 0 100%;
+  flex-direction:row;
 }
 /* Style the navigation menu */
 nav {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  background: #ccc;
+  background: #dff0ef;
   padding: 20px;
 }
 
@@ -57,16 +67,41 @@ article {
   flex-direction: column;
   background-color: #f1f1f1;
   padding: 10px;
+  max-width: 30em;
+  min-width: 25em;
+    border:2px solid black;
+    margin: 5px;
 }
+.button {
+  dispay:flex;
+  margin-left: 5%;
+}
+.button2 {
+  margin-left: 80%;
+}
+.pamelding{
+  border:2px solid black;
+  max-width:20%;
+  min-width:15%;
 
+}
 /* Style the footer */
 footer {
-  background-color: #777;
+  display: flex
+  flex-direction: row;
+  background-color: #dff0ef;
   padding: 10px;
   text-align: center;
   color: white;
 }
-
+.remaining-count {
+      color: green; /* Change the color to your preference */
+      font-weight: bold;
+    }
+.message {
+      margin-top: 5px; /* Adjust spacing */
+      color: blue; /* Change the color to your preference */
+    }
 /* Responsive layout - makes the menu and the content (inside the section) sit on top of each other instead of next to each other */
 @media (max-width: 600px) {
   section {
@@ -78,9 +113,18 @@ footer {
 </head>
 <body>
 <header>
-  <h2>Sightseeing</h2>
+  <h2>Aktivitet</h2>
+  <hr>
 </header>
+<header class="header2">
+  <h4 class="toptext">home</h4>
+  <h4 class="toptext">Aktiviteter</h4>
+  <h4 class="toptext">Blog</h4>
+  <h4 class="toptext">Leverandører</h4>
+  <h4 class="toptext">about</h4>
 
+
+</header>
 <section>
   <form method="get" action="{% url 'polls:article_list' %}">
     {% csrf_token %}
@@ -118,9 +162,8 @@ footer {
     </div>
   {% endif %}
 
-  <ul>
+
     {% for article in articles %}
-      <li>
         <article>
           <header><h1>{{ article.title }}</h1></header>
           <ul>
@@ -132,19 +175,59 @@ footer {
             <li>Free: {{ article.free }}</li>
             <!-- Add additional fields based on your model -->
           </ul>
-          <details>More information</details>
+          <details>
+        <summary>More information</summary>
+
+        {% if article.slot1_remaining_count > 0 %}
+          <h3 class="pamelding">Klokken 08-12</h3>
+          <button id="slot1-button-{{ article.id }}" class="button" onclick="reserveSlot(1, {{ article.id }})">
+            Meld på
+          </button>
+          <p id="slot1-message-{{ article.id }}"></p>
+          <p id="slot1-counter-{{ article.id }}">{{ article.slot1_remaining_count }}</p>
+        {% endif %}
+
+        {% if article.slot2_remaining_count > 0 %}
+          <h3 class="pamelding">Klokken 12-16</h3>
+          <button id="slot2-button-{{ article.id }}" class="button" onclick="reserveSlot(2, {{ article.id }})">
+            Meld på
+          </button>
+          <p id="slot2-message-{{ article.id }}"></p>
+          <p id="slot2-counter-{{ article.id }}">{{ article.slot2_remaining_count }}</p>
+        {% endif %}
+
+        {% if article.slot3_remaining_count > 0 %}
+          <h3 class="pamelding">Klokken 16-20</h3>
+          <button id="slot3-button-{{ article.id }}" class="button" onclick="reserveSlot(3, {{ article.id }})">
+            Meld på
+          </button>
+          <p id="slot3-message-{{ article.id }}"></p>
+          <p id="slot3-counter-{{ article.id }}">{{ article.slot3_remaining_count }}</p>
+        {% endif %}
+      </details>
         </article>
-      </li>
     {% endfor %}
-  </ul>
+
 </section>
-
-
-
-
 <footer>
   <p>Footer</p>
 </footer>
+<script>
+  // Add this script to handle the button click
+  function reserveSlot(slotId, articleId) {
+    const button = document.getElementById(`slot${slotId}-button-${articleId}`);
+    const messageElement = document.getElementById(`slot${slotId}-message-${articleId}`);
+    const counterElement = document.getElementById(`slot${slotId}-counter-${articleId}`);
 
+    // Add this line to change the button text
+    button.innerText = "Meldt på";
+
+    // Add this line to update the message
+    messageElement.innerText = "Påmeldt!";
+
+    // Add this line to decrease the counter by one
+    counterElement.innerText = parseInt(counterElement.innerText) - 1;
+  }
+</script>
 </body>
 </html>

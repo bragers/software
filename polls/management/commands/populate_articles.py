@@ -1,8 +1,8 @@
 # polls/management/commands/populate_articles.py
-from django.core.management.base import BaseCommand
-from polls.models import Article, Location, Language
-from django.utils import timezone
 import random
+from django.core.management.base import BaseCommand
+from django.utils import timezone
+from polls.models import Location, Language, Article
 
 
 class Command(BaseCommand):
@@ -29,6 +29,10 @@ class Command(BaseCommand):
                 location=Location.objects.get(name=random.choice(locations)),
                 language=Language.objects.get(name=random.choice(languages)),
                 free=random.choice([True, False]),
+                slot1_remaining_count=20,  # Adjust this based on your requirements
+                slot2_remaining_count=20,
+                slot3_remaining_count=20,
+                # Add more fields as needed
             )
 
         self.stdout.write(self.style.SUCCESS('Successfully populated articles'))

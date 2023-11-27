@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ArticleListView, process_payment, login_user
+from .views import ArticleListView, process_payment, login_user, handle_button_click
 
 app_name = "polls"
 urlpatterns = [
@@ -10,4 +10,7 @@ urlpatterns = [
     path('', ArticleListView.as_view(), name='article_list'),  # This handles the root path
     path('payment/', process_payment, name='process_payment'),
     path('login/', login_user, name='login_user'),
+    path('articles/<int:article_id>/handle_button_click/<int:slot_id>/', handle_button_click,
+         name='handle_button_click'),
+
 ]

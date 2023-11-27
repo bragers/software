@@ -1,8 +1,9 @@
+# views.py
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from .models import Article
-from django.core.paginator import Paginator, EmptyPage
-from .forms import ArticleFilterForm  # Assuming your form is named ArticleFilterForm
+from .forms import ArticleFilterForm
 
 
 class ArticleListView(ListView):
@@ -44,6 +45,19 @@ class ArticleListView(ListView):
         self.object_list = self.get_queryset()
         context = self.get_context_data()
         return self.render_to_response(context)
+
+
+def handle_button_click(request, article_id, slot_id):
+    article = get_object_or_404(Article, pk=article_id)
+    remaining_count_field = f'slot{slot_id}_remaining_count'
+
+    if getattr(article, remaining_count_field) > 0:
+        # Update the remaining count
+        setattr(article, remaining_count_field, getattr(article, remaining_count_field) - 1)
+        article.save()
+        return JsonResponse({'status': 'success', 'message': 'Påmeldt!'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Maximum limit reached'}, status=400)
 
 
 def process_payment(request):
